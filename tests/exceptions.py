@@ -3,22 +3,22 @@ from rest_framework.exceptions import APIException, NotFound
 from rest_framework.permissions import IsAuthenticated
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def server_error(request):
-    raise APIException('APIException')
+    raise APIException("APIException")
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def not_found(request):
-    raise NotFound('NotFound')
+    raise NotFound("NotFound")
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def method_not_allowed(request):
     pass
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 @permission_classes((IsAuthenticated,))
 def not_authenticated(request):
     pass

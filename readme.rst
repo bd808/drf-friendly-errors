@@ -3,11 +3,11 @@ DRF Friendly Errors (New Version: Django & DRF)
 
 **Extension for Django REST framework error display**
 
-.. image:: https://travis-ci.org/frankyjquintero/drf-friendly-errors.svg?branch=master
-    :target: https://travis-ci.org/frankyjquintero/drf-friendly-errors
+.. image:: https://github.com/egyanamtech/drf-friendly-errors/actions/workflows/test.yml/badge.svg?branch=master
+    :target: https://github.com/egyanamtech/drf-friendly-errors/actions/workflows/test.yml/badge.svg
 
 
-* Fork From: https://github.com/FutureMind/drf-friendly-errors
+* Fork From: https://github.com/FutureMind/drf-friendly-errors -> https://github.com/citixensas/drf-friendly-errors -> https://github.com/bd808/drf-friendly-errors
 
 Overview
 --------
@@ -78,7 +78,7 @@ Or using pip (pendent register xD)
 
 .. code:: bash
 
-    $ pip install drf-friendly-errors
+    $ pip install drf-friendly-errors-egt
 
 Usage
 -----
@@ -96,17 +96,18 @@ settings.py
 
 .. code:: python
 
-    FRIENDLY_ERRORS = {
-        FIELD_ERRORS = {
-            'CharField': {'required': 10, 'null':11, 'blank': 12, 'max_length': 13, 'min_length': 14}
-        }
-        VALIDATOR_ERRORS = {
-            'UniqueValidator': 50
-        },
-        EXCEPTION_DICT = {
-            'PermissionDenied': 100
-        }
+FRIENDLY_ERRORS = {
+    "FIELD_ERRORS": {
+        'CharField': {'required': 10, 'null': 11, 'blank': 12, 'max_length': 13, 'min_length': 14}
+    },
+    "VALIDATOR_ERRORS": {
+        'UniqueValidator': 50
+    },
+    "EXCEPTION_DICT": {
+        'PermissionDenied': 100
     }
+}
+
 
 Custom serializer validation
 ----------------------------
@@ -357,3 +358,8 @@ Contributors
 ------------
 - Geoffrey Lehée <socketubs>
 - Franky Quintero <frankyjquintero>
+- toxinu
+- citixensas
+- bd808
+
+And many others, feel free to add a PR to add yourself.

@@ -3,18 +3,18 @@ from django.db import models
 from django.template.defaultfilters import title
 
 LANGUAGE_CHOICES = (
-    ('python', 'Python'),
-    ('c++', 'C++'),
-    ('java', 'Java'),
-    ('ruby', 'Ruby'),
-    ('cobol', 'Cobol'),
-    ('erlang', 'Erlang')
+    ("python", "Python"),
+    ("c++", "C++"),
+    ("java", "Java"),
+    ("ruby", "Ruby"),
+    ("cobol", "Cobol"),
+    ("erlang", "Erlang"),
 )
 
 
 def is_proper_title(value):
     if value and value != title(value):
-        raise ValidationError('Incorrect title')
+        raise ValidationError("Incorrect title")
 
 
 class Snippet(models.Model):

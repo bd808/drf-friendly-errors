@@ -10,13 +10,30 @@ import sys
 import pytest
 
 PYTEST_ARGS = {
-    'default': ['tests', '--tb=short', '-s', '-rw'],
-    'fast': ['tests', '--tb=short', '-q', '-s', '-rw'],
+    "default": [
+        "tests",
+        "--tb=short",
+        "-s",
+        "-rw",
+        "--cov=rest_framework_friendly_errors",
+        "--cov-report=html",
+        "--cov-config=.coveragerc",
+    ],
+    "fast": ["tests", "--tb=short", "-q", "-s", "-rw"],
 }
 
-FLAKE8_ARGS = ['rest_framework', 'tests']
+FLAKE8_ARGS = ["rest_framework", "tests"]
 
-ISORT_ARGS = ['--recursive', '--check-only', '--diff', '-o' 'uritemplate', '-p', 'tests', 'rest_framework', 'tests']
+ISORT_ARGS = [
+    "--recursive",
+    "--check-only",
+    "--diff",
+    "-o" "uritemplate",
+    "-p",
+    "tests",
+    "rest_framework",
+    "tests",
+]
 
 
 def exit_on_failure(ret, message=None):
@@ -25,32 +42,41 @@ def exit_on_failure(ret, message=None):
 
 
 def flake8_main(args):
-    print('Running flake8 code linting')
-    ret = subprocess.call(['flake8'] + args)
-    print('flake8 failed' if ret else 'flake8 passed')
+    print("Running flake8 code linting")
+    ret = subprocess.call(["flake8"] + args)
+    print("flake8 failed" if ret else "flake8 passed")
+    return ret
+
+
+def black_main():
+    print("Running black code formatting")
+    ret = subprocess.call(["black", "--check", "."])
+    print("black failed" if ret else "black passed")
     return ret
 
 
 def isort_main(args):
-    print('Running isort code checking')
-    ret = subprocess.call(['isort'] + args)
+    print("Running isort code checking")
+    ret = subprocess.call(["isort"] + args)
 
     if ret:
-        print('isort failed: Some modules have incorrectly ordered imports. Fix by running `isort --recursive .`')
+        print(
+            "isort failed: Some modules have incorrectly ordered imports. Fix by running `isort --recursive .`"
+        )
     else:
-        print('isort passed')
+        print("isort passed")
 
     return ret
 
 
 def split_class_and_function(string):
-    class_string, function_string = string.split('.', 1)
+    class_string, function_string = string.split(".", 1)
     return "%s and %s" % (class_string, function_string)
 
 
 def is_function(string):
     # `True` if it looks like a test function is included in the string.
-    return string.startswith('test_') or '.test_' in string
+    return string.startswith("test_") or ".test_" in string
 
 
 def is_class(string):
@@ -60,56 +86,60 @@ def is_class(string):
 
 if __name__ == "__main__":
     try:
-        sys.argv.remove('--nolint')
+        sys.argv.remove("--nolint")
     except ValueError:
         run_flake8 = True
         run_isort = True
+        run_black = True
     else:
         run_flake8 = False
         run_isort = False
+        run_black = False
 
     try:
-        sys.argv.remove('--lintonly')
+        sys.argv.remove("--lintonly")
     except ValueError:
         run_tests = True
     else:
         run_tests = False
 
     try:
-        sys.argv.remove('--fast')
+        sys.argv.remove("--fast")
     except ValueError:
-        style = 'default'
+        style = "default"
     else:
-        style = 'fast'
+        style = "fast"
         run_flake8 = False
         run_isort = False
+        run_black = False
 
     if len(sys.argv) > 1:
         pytest_args = sys.argv[1:]
         first_arg = pytest_args[0]
 
         try:
-            pytest_args.remove('--coverage')
+            pytest_args.remove("--coverage")
         except ValueError:
             pass
         else:
             pytest_args = [
-                '--cov-report',
-                'xml',
-                '--cov',
-                'rest_framework'] + pytest_args
+                "--cov-report",
+                "xml",
+                "--cov",
+                "rest_framework",
+            ] + pytest_args
 
-        if first_arg.startswith('-'):
+        if first_arg.startswith("-"):
             # `runtests.py [flags]`
-            pytest_args = ['tests'] + pytest_args
+            pytest_args = ["tests"] + pytest_args
         elif is_class(first_arg) and is_function(first_arg):
             # `runtests.py TestCase.test_function [flags]`
             expression = split_class_and_function(first_arg)
-            pytest_args = ['tests', '-k', expression] + pytest_args[1:]
+            pytest_args = ["tests", "-k", expression] + pytest_args[1:]
         elif is_class(first_arg) or is_function(first_arg):
             # `runtests.py TestCase [flags]`
             # `runtests.py test_function [flags]`
-            pytest_args = ['tests', '-k', pytest_args[0]] + pytest_args[1:]
+            pytest_args = ["tests", "-k", pytest_args[0]] + pytest_args[1:]
     else:
         pytest_args = PYTEST_ARGS[style]
 
@@ -121,3 +151,6 @@ if __name__ == "__main__":
 
     if run_isort:
         exit_on_failure(isort_main(ISORT_ARGS))
+
+    if run_black:
+        exit_on_failure(black_main())
