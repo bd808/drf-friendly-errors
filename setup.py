@@ -13,8 +13,8 @@ def get_version(package):
     """
     Return package version as listed in `__version__` in `init.py`.
     """
-    with open(os.path.join(package, '__init__.py'), 'rb') as init_py:
-        src = init_py.read().decode('utf-8')
+    with open(os.path.join(package, "__init__.py"), "rb") as init_py:
+        src = init_py.read().decode("utf-8")
         return re.search("__version__ = ['\"]([^'\"]+)['\"]", src).group(1)
 
 
@@ -22,9 +22,11 @@ def get_packages(package):
     """
     Return root package and all sub-packages.
     """
-    return [dirpath
-            for dirpath, dirnames, filenames in os.walk(package)
-            if os.path.exists(os.path.join(dirpath, '__init__.py'))]
+    return [
+        dirpath
+        for dirpath, dirnames, filenames in os.walk(package)
+        if os.path.exists(os.path.join(dirpath, "__init__.py"))
+    ]
 
 
 def get_package_data(package):
@@ -32,24 +34,25 @@ def get_package_data(package):
     Return all files under the root package, that are not in a
     package themselves.
     """
-    walk = [(dirpath.replace(package + os.sep, '', 1), filenames)
-            for dirpath, dirnames, filenames in os.walk(package)
-            if not os.path.exists(os.path.join(dirpath, '__init__.py'))]
+    walk = [
+        (dirpath.replace(package + os.sep, "", 1), filenames)
+        for dirpath, dirnames, filenames in os.walk(package)
+        if not os.path.exists(os.path.join(dirpath, "__init__.py"))
+    ]
 
     filepaths = []
     for base, filenames in walk:
-        filepaths.extend([os.path.join(base, filename)
-                          for filename in filenames])
+        filepaths.extend([os.path.join(base, filename) for filename in filenames])
     return {package: filepaths}
 
 
-version = get_version('rest_framework_friendly_errors')
+version = get_version("rest_framework_friendly_errors")
 
 
-if sys.argv[-1] == 'publish':
-    if os.system("pip freeze | grep wheel"):
-        print("wheel not installed.\nUse `pip install wheel`.\nExiting.")
-        sys.exit()
+if sys.argv[-1] == "publish":
+    # if os.system("pip freeze | grep wheel"):
+    #     print("wheel not installed.\nUse `pip install wheel`.\nExiting.")
+    #     sys.exit()
     if os.system("pip freeze | grep twine"):
         print("twine not installed.\nUse `pip install twine`.\nExiting.")
         sys.exit()
@@ -58,35 +61,35 @@ if sys.argv[-1] == 'publish':
     print("You probably want to also tag the version now:")
     print("  git tag -a %s -m 'version %s'" % (version, version))
     print("  git push --tags")
-    shutil.rmtree('dist')
-    shutil.rmtree('build')
-    shutil.rmtree('djangorestframework.egg-info')
+    shutil.rmtree("dist")
+    shutil.rmtree("build")
+    # shutil.rmtree("djangorestframework.egg-info")
     sys.exit()
 
 
 setup(
-    name='drf-friendly-errors',
+    name="drf-friendly-errors-egt",
     version=version,
-    license='MIT',
-    description='Extension for displaying serializer validation errors'
-                ' in Django Rest Framework',
-    long_description='Extension for displaying serializer validation errors'
-                ' in Django Rest Framework',
-    url='https://github.com/citixensas/drf-friendly-errors',
-    author='Tomasz Łaszczuk(original), Franky Quintero(New version)',
-    author_email='t.laszczuk@futuremind.com',
-    packages=get_packages('rest_framework_friendly_errors'),
-    package_data=get_package_data('rest_framework_friendly_errors'),
+    license="MIT",
+    description="Extension for displaying serializer validation errors"
+    " in Django Rest Framework",
+    long_description="Extension for displaying serializer validation errors"
+    " in Django Rest Framework",
+    url="https://github.com/egyanamtech/drf-friendly-errors",
+    author="Tomasz Łaszczuk(original), Franky Quintero(New version), toxinu, citixensas, bd808",
+    author_email="mrityunjay.saxena@egyanamtech.com",
+    packages=get_packages("rest_framework_friendly_errors"),
+    package_data=get_package_data("rest_framework_friendly_errors"),
     install_requires=[],
     zip_safe=False,
     classifiers=[
-        'Environment :: Web Environment',
-        'Framework :: Django',
-        'License :: OSI Approved :: MIT License',
-        'Intended Audience :: Developers',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Programming Language :: Python :: 3',
-        'Topic :: Internet :: WWW/HTTP',
-    ]
+        "Environment :: Web Environment",
+        "Framework :: Django",
+        "License :: OSI Approved :: MIT License",
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3",
+        "Topic :: Internet :: WWW/HTTP",
+    ],
 )

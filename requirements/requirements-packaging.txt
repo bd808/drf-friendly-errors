@@ -5,7 +5,7 @@ wheel==0.33.6
 twine==1.13.0
 
 # Transifex client for managing translation resources.
-transifex-client==0.13.6
+transifex-client==0.14.2
 
 # Pandoc to have a nice pypi page
 pypandoc

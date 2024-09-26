@@ -1,5 +1,6 @@
 from tox.config import parseconfig
 import os
+
 file = open(".travis.yml", "w")
 base_python = {
     "py36": "3.6",
@@ -8,7 +9,7 @@ base_python = {
     "lint": "3.7",
     "read": "3.7",
 }
-env_configs = parseconfig(None, 'tox').envconfigs
+env_configs = parseconfig(None, "tox").envconfigs
 
 file.write("dist: xenial" + "\r")
 file.write("language: python" + "\r")
@@ -22,5 +23,3 @@ file.write(" - pip install tox" + "\r")
 file.write("script:" + "\r")
 file.write(" - tox -e $TOX_ENV" + "\r")
 file.close()
-
-

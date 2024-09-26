@@ -1,6 +1,3 @@
-[run]
-include = rest_framework_friendly_errors/*
-
 [report]
 exclude_lines =
     pragma: no cover
@@ -19,6 +16,3 @@ exclude_lines =
     if __name__ == .__main__.:
 
 precision = 2
-
-[html]
-directory = htmlcov/

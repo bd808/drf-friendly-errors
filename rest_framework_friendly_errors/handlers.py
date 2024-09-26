@@ -15,7 +15,7 @@ def friendly_exception_handler(exc, context):
     if response is not None:
         if is_pretty(response):
             return response
-        error_message = response.data.get('detail', str(exc.__class__.__name__))
+        error_message = response.data.get("detail", str(exc.__class__.__name__))
         error_code = settings.FRIENDLY_EXCEPTION_DICT.get(exc.__class__.__name__)
         data = response.data
         errors = []
@@ -23,7 +23,11 @@ def friendly_exception_handler(exc, context):
             message = value[0] if type(value) is list else value
             errors.append({"field": field, "message": message})
 
-        response.data = {'code': error_code, 'message': error_message,
-                         'status_code': response.status_code, 'errors': errors}
+        response.data = {
+            "code": error_code,
+            "message": error_message,
+            "status_code": response.status_code,
+            "errors": errors,
+        }
 
     return response

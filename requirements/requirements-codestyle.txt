@@ -5,3 +5,5 @@ pycodestyle==2.5.0
 
 # Sort and lint imports
 isort==4.3.21
+
+black==21.6b0
